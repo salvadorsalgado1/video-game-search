@@ -2,10 +2,11 @@
   <div class="home">
     <div class="container">
       <div class="row">
-        <div class="col m12 l6">
+        <div class="col m12 l5">
           <div class="card">
             <div class="card-content">
-            <h1>Home</h1>
+            <h1 class="heading-h1">Home</h1>
+            <p class="heading-description">Search for your favorite titles, ratings, and even go as far as finding information about your favorite developer titles. Give it a search to try it out!</p>
               <form>
                 <label>Search</label>
                 <div class="input-field">
@@ -16,13 +17,48 @@
             </div>
           </div>
         </div>
-        <div class="col m12 l6">
+        <div class="col m12 l7">
           <div class="card">
             <div class="card-content">
-            <h1>Results 1 of </h1>
+            <h1 class="heading-h1">{{this.results.length}} Result(s)</h1>
             <div v-if="loading">
               <Loading/>
             </div>
+            <table class="table bordered striped centered" >
+              <caption>Game Listings</caption>
+              <thead>
+              <tr >
+                <th>ID</th>
+                <th>Game Title</th>
+                <th>Rating</th>
+                <th>Release Year</th>
+                
+              </tr>
+              </thead>
+              <tbody>
+                <tr v-for="result in results" :key="result.id">
+                  <td>{{result.id}}</td>
+                  <td>{{result.title}}</td>
+                  <td>{{result.rating}}</td>
+                  <td>{{result.releaseYear}}</td>
+                  <td><div v-if="toggleEdit">
+                     <router-link class="btn-edit-delete btn blue" :to="{name:'Edit', 
+                  params:{
+                    id:result.id, 
+                    title:result.title, 
+                    //developer:result.developer,
+                   // publisher:result.publisher,
+                    rating:result.rating,
+                    //console:result.console,
+                    releaseYear:result.releaseYear
+                    }}">Edit <i class="material-icons right">edit</i></router-link>
+                  <button class="btn-edit-delete btn red" @click="removeQuery(result.id)">Delete <i class="material-icons right">delete_forever</i></button>
+                  </div></td>
+                </tr>
+              </tbody>
+              
+            </table>
+            <!--
               <div>
                 <ul class="collection" v-for="item in items" :key="item.id">
                   <li>{{item.id}} {{item.title}}<br/> {{item.developer}}</li>
@@ -39,9 +75,8 @@
                     }}">Edit <i class="material-icons right">edit</i></router-link>
                   <button class="btn-edit-delete btn red" @click="removeQuery(item.id)">Delete <i class="material-icons right">delete_forever</i></button>
                   </div>
-                 
                 </ul>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -50,19 +85,20 @@
     <div @click="toggleEditHandler">
       <Floating @click="toggleEditHandler"/>
     </div>
-    
   </div>
 </template>
 <script>
 import HelloWorld from '@/components/HelloWorld.vue'
 import Floating from '@/components/Floating.vue'
 import Loading from '@/components/Loading.vue'
+import Axios from 'axios'
 export default {
   name: 'Home',
   components:{Loading, Floating},
   data(){
     return{
-      loading:false,
+      results:[],
+      loading:true,
       toggleEdit:false,
       queryCount:null,
       items:[
@@ -111,11 +147,18 @@ export default {
         },
         mounted(){
         document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.fixed-action-btn');
-    var instances = M.FloatingActionButton.init(elems);
-  });
+          var elems = document.querySelectorAll('.fixed-action-btn');
+          var instances = M.FloatingActionButton.init(elems);
+        });
      
-      
+        Axios.get('http://localhost:8081/api/get').then((response)=>{
+          this.loading = false;
+          console.log(response);
+          this.results = response.data
+        })
+
+
+
         }
 }
 </script>
@@ -127,9 +170,13 @@ export default {
   font-size:1.6em;
 }
 .btn-edit-delete{
-  margin:10px 5px;
-  margin-bottom:20px;
-  margin-top:10px;
+  margin:5px 1px;
+  margin-bottom:5px;
+  margin-top:5px;
 }
+.heading-h1{
+  font-size:1.8em;
+}
+
 </style>
 

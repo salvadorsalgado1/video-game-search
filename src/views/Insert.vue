@@ -1,32 +1,27 @@
 <template>
     <div class="insert">
-        
         <div class="container">
             <div class="card">
                 <div class="card-content">
-                    <h1>Insert</h1>
+                    <h1 class="insert-heading">Insert</h1>
                     <form @submit.prevent="insertData()">
-
-                    
                     <div class="container input-field">
                         <div class="row">
                             <div class="col l12 m12 ">
                                 <input placeholder="Title" name="title" for="title" type="text" v-model="title"/>
                                 <label>Title</label>
                             </div>
-                            
                         </div>
                         <div class="row">
                             <div class="col l6 m6 s12">
                                 <input placeholder="Publisher Name" v-model="publisher"/>
-                                <label>publisher</label>
+                                <label>Publisher</label>
                             </div>
                             <div class="col l6 m6 s12">
                                 <input placeholder="Developer Name" v-model="developer"/>
                                 <label>Developer</label>
                             </div>
                         </div>
-                        
                         <div class="row">
                             <div class="col l6 m6 s12">
                                   <div class="input-field col s12">
@@ -70,6 +65,7 @@
     </div>
 </template>
 <script>
+import Axios from 'axios'
 export default {
     name:'Insert',
     data(){
@@ -80,29 +76,38 @@ export default {
             rating:null,
             console:null,
             releaseYear:null,
-            
         }
     },
-    
     methods:{
         insertData(){
             this.releaseYear = parseInt(this.releaseYear)
             console.log(this.title,this.publisher,this.developer,this.rating,this.console, typeof this.releaseYear)
             console.log(this.releaseYear)
             console.log(this.rating)
-        
+
+            Axios.post('http://localhost:8081/api/insert', {
+                console:this.console,
+                publisher:this.publisher,
+                developer:this.developer,
+                rating:this.rating,
+                releaseYear:this.releaseYear,
+                title:this.title
+            }).then(()=>{
+                console.log("Successful Insert")
+            })
+
+
         },
-        
     },
     mounted(){
-
-     ($(document).ready(function(){
-    $('select').formSelect();
-  }))
-   
-       
-        }
+        ($(document).ready(function(){
+            $('select').formSelect();}))
+    }
 }
 </script>
 <style>
+.insert-heading{
+    font-size:1.8em;
+    
+}
 </style>
