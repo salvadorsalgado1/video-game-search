@@ -29,12 +29,19 @@ import Navigation from './components/Navigation'
   color: #2c3e50;
 }
 body{
-   background:url('./assets/controller.jpg') no-repeat center center fixed;
+   background: url('./assets/controller.jpg') no-repeat center center fixed; 
  -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
+
+
+
+
+
+
+
 
 #nav {
   padding: 30px;

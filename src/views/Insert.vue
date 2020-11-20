@@ -7,7 +7,7 @@
                     <form @submit.prevent="insertData()">
                     <div class="container input-field">
                         <div class="row">
-                            <div class="col l12 m12 ">
+                            <div class="col l12 m12 s12">
                                 <input placeholder="Title" name="title" for="title" type="text" v-model="title"/>
                                 <label>Title</label>
                             </div>
@@ -57,6 +57,11 @@
                             </div>
                         </div>
                     </div>
+                    <p class="feedback-error">{{feedbackErr}}</p>
+                    <div v-if="loading">
+                        <Loading/>
+                    </div>
+                    
                     <button class="primary btn">Submit</button>
                 </form>
                 </div>
@@ -66,8 +71,13 @@
 </template>
 <script>
 import Axios from 'axios'
+import Loading from '@/components/Loading'
 export default {
     name:'Insert',
+    components:{
+        Loading
+
+    },
     data(){
         return{
             title:null,
@@ -76,10 +86,22 @@ export default {
             rating:null,
             console:null,
             releaseYear:null,
+            feedbackErr:'Must Have a year more than 200',
+            loading:false
         }
     },
     methods:{
         insertData(){
+
+            if(this.title || this.publisher || this.developer || this.rating || this.console || this.releaseYear == null){
+                this.feedbackErr = true;
+                this.feedbackErr = "Form Values Cannot Be Null"
+            }else if(this.releaseYear > 2022){
+                this.feedbackErr = "Year Cannot Be More Than 2022";
+                this.releaseYear = null;
+            }
+
+
             this.releaseYear = parseInt(this.releaseYear)
             console.log(this.title,this.publisher,this.developer,this.rating,this.console, typeof this.releaseYear)
             console.log(this.releaseYear)
@@ -93,7 +115,19 @@ export default {
                 releaseYear:this.releaseYear,
                 title:this.title
             }).then(()=>{
-                console.log("Successful Insert")
+                
+            
+             console.log("Successful Insert");
+                    
+            }).then(()=>{
+                this.loading = true;
+                setTimeout(()=>{
+                    this.loading = false;
+                    this.$router.push({name:'Home'}) 
+                    
+                    
+                    },1400)
+                
             })
 
 
@@ -110,4 +144,9 @@ export default {
     font-size:1.8em;
     
 }
+.card .card-content .feedback-error{
+    color:red;
+    margin-bottom:20px;
+}
+
 </style>

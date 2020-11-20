@@ -5,8 +5,8 @@
             <div class="card">
 
                 <div class="card-content">
-                    <h1>Game Data</h1>
-                    <table class="table table-striped table-bordered responsive-table">
+                    <h1 class="heading-h1">Game Data</h1>
+                    <table class="table bordered striped centered responsive-table">
                         <thead>
                           <tr>
                             <th>ID</th>
@@ -30,7 +30,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <h1>Edit Information</h1>
+                    <h1 class="heading-h1">Edit Information</h1>
                     <form @submit.prevent="submitEdit()">
                     <div class="container input-field">
                         <div class="row">
