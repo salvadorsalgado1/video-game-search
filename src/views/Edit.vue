@@ -1,9 +1,7 @@
 <template>
     <div class="edit">
         <div class="container">
-           
             <div class="card">
-
                 <div class="card-content">
                     <h1 class="heading-h1">Game Data</h1>
                     <table class="table bordered striped centered responsive-table">
@@ -35,7 +33,7 @@
                     <div class="container input-field">
                         <div class="row">
                             <div class="col l12 m12 ">
-                                <input placeholder="Title" name="title" for="title" type="text" v-model="title"/>
+                                <input placeholder="Title" name="title" for="title" type="text" v-model="gettitle"/>
                                 <label>Title</label>
                             </div>
                         </div>
@@ -77,13 +75,17 @@
                                     <label>Console</label>
                                 </div>
                             </div>
-                            
                         </div>
                         <div class="row">
                            <div class="col l6 m6 s12">
                                 <input min="1980" max="2022" type="number" class="datepicker" placeholder="Release Year" v-model="releaseYear">
                                 <label>Year</label>
                             </div>
+                        </div>
+                        <p v-if="feedbackErr">{{feedback}}</p>
+                        <div v-if="loading">
+                            <p class="p-loading">Edit Successful</p>
+                            <Loading/>
                         </div>
                     </div>
                     <button class="primary btn">Submit</button>
@@ -94,26 +96,51 @@
     </div>
 </template>
 <script>
+import Axios from 'axios';
+import Loading from '@/components/Loading'
 export default {
     name:'Edit',
     props:['id', 'title', 'developer','publisher', 'rating', 'console','releaseYear'],
+    components:{Loading},
     data(){
         return{
-
+            gettitle:this.title,
+            getid:this.id,
+            getrating:this.rating,
+            getreleaseYear:this.releaseYear,
+            loading:false,
+            feedbackErr:null,
+            feedback:null
         }
     },
     methods:{
         submitEdit(){
-            console.log("Edit Successful")
+            this.loading = true;
+            Axios.put('http://localhost:8081/api/update', 
+            {
+                id:this.getid,
+                title:this.gettitle
+            
+            })
+            setTimeout(()=>{
+                this.loading = false;
+                this.$router.push({name:'Home'})
+            }, 1000)
         }
     },
     mounted(){
-        ($(document).ready(function(){
+    ($(document).ready(function(){
     $('select').formSelect();
   }))
     }
 }
 </script>
 <style>
-
+.card .card-content p{
+    margin-bottom:20px;
+}
+.p-loading{
+    color:darkgreen;
+    margin-top:50px;
+}
 </style>

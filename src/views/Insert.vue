@@ -55,13 +55,14 @@
                                 <input min="1980" max="2022" type="number" class="datepicker" placeholder="Release Year" v-model="releaseYear">
                                 <label>Year</label>
                             </div>
+                            
                         </div>
-                    </div>
-                    <p class="feedback-error">{{feedbackErr}}</p>
-                    <div v-if="loading">
+                         <div v-if="loading">
+                        <p class="p-loading">Successful Insert</p>
                         <Loading/>
                     </div>
-                    
+                    </div>
+                    <p v-if="feedbackErr" class="feedback-error">{{feedback}}</p>
                     <button class="primary btn">Submit</button>
                 </form>
                 </div>
@@ -76,7 +77,6 @@ export default {
     name:'Insert',
     components:{
         Loading
-
     },
     data(){
         return{
@@ -86,51 +86,42 @@ export default {
             rating:null,
             console:null,
             releaseYear:null,
-            feedbackErr:'Must Have a year more than 200',
-            loading:false
+            feedback:null,
+            feedbackErr:true,
+            loading:false,
         }
     },
     methods:{
         insertData(){
-
-            if(this.title || this.publisher || this.developer || this.rating || this.console || this.releaseYear == null){
+            if(this.title == null ||  this.publisher == null || this.developer == null || this.rating == null || this.console == null || this.releaseYear == null){
                 this.feedbackErr = true;
-                this.feedbackErr = "Form Values Cannot Be Null"
-            }else if(this.releaseYear > 2022){
-                this.feedbackErr = "Year Cannot Be More Than 2022";
-                this.releaseYear = null;
-            }
-
-
-            this.releaseYear = parseInt(this.releaseYear)
-            console.log(this.title,this.publisher,this.developer,this.rating,this.console, typeof this.releaseYear)
-            console.log(this.releaseYear)
-            console.log(this.rating)
-
-            Axios.post('http://localhost:8081/api/insert', {
+                this.feedback = "Form values cannot be null!";
+                //Cannot be Null or else DB Breaks
+            }else{
+                this.feedbackErr = false;
+                this.releaseYear = parseInt(this.releaseYear)
+                console.log(this.title,this.publisher,this.developer,this.rating,this.console, typeof this.releaseYear)
+                console.log(this.releaseYear)
+                console.log(this.rating)
+            
+                Axios.post('http://localhost:8081/api/insert', 
+                {
                 console:this.console,
                 publisher:this.publisher,
                 developer:this.developer,
                 rating:this.rating,
                 releaseYear:this.releaseYear,
                 title:this.title
-            }).then(()=>{
-                
-            
-             console.log("Successful Insert");
-                    
-            }).then(()=>{
-                this.loading = true;
-                setTimeout(()=>{
-                    this.loading = false;
-                    this.$router.push({name:'Home'}) 
-                    
-                    
-                    },1400)
-                
-            })
-
-
+                }).then(()=>{
+                console.log("Successful Insert");
+                }).then(()=>{
+                    this.loading = true;
+                    setTimeout(()=>{
+                        this.loading = false;
+                        this.$router.push({name:'Home'}) 
+                        },1000)
+                })
+            }
         },
     },
     mounted(){
@@ -142,7 +133,6 @@ export default {
 <style>
 .insert-heading{
     font-size:1.8em;
-    
 }
 .card .card-content .feedback-error{
     color:red;

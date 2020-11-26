@@ -47,7 +47,6 @@
                   </div></td>
                 </tr>
               </tbody>
-              
             </table>
             </div>
           </div>
@@ -60,7 +59,6 @@
   </div>
 </template>
 <script>
-import HelloWorld from '@/components/HelloWorld.vue'
 import Floating from '@/components/Floating.vue'
 import Loading from '@/components/Loading.vue'
 import Axios from 'axios'
