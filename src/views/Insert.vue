@@ -38,13 +38,24 @@
                              <div class="col l6 m6 s12">
                                 <div class="input-field col s12">
                                     <select v-model="console">
-                                    <option value="N/A" disabled selected>Choose your option</option>
-                                    <option value="nintendo-switch">Nintendo Switch</option>
-                                    <option value="playstation-5">Playstation 5</option>
-                                    <option value="playstation-4">Playstation 4</option>
-                                    <option value="playstation-3">Playstation 3</option>
+                                    <option value="N/A" disabled selected>Choose your option</option>                                    
+                                    <option value="3DS">3DS</option>
+                                    <option value="DC">DC</option>
+                                    <option value="DS">DS</option>
+                                    <option value="GBA">Gameboy Advance</option>
+                                    <option value="GC">GameCube</option>
+                                    <option value="PC">PC</option>
+                                    <option value="Playstation 5">Playstation 5</option>
+                                    <option value="Playstation 4">Playstation 4</option>
+                                    <option value="Playstation 3">Playstation 3</option>
+                                    <option value="Playstation 2">Playstation 2</option>
+                                    <option value="Playstation">Playstation</option>
+                                    <option value="Wii">Wii</option>
+                                    <option value="WiiU">WiiU</option>
                                     <option value="Xbox">Xbox</option>
-                                    <option value="pc">PC</option>
+                                    <option value="Xbox 360">Xbox 360</option>
+                                    <option value="Xbox One">Xbox One</option>
+                                    
                                     </select>
                                     <label>Console</label>
                                 </div>
@@ -89,10 +100,36 @@ export default {
             feedback:null,
             feedbackErr:true,
             loading:false,
+            maxIDs:null
         }
     },
     methods:{
         insertData(){
+                this.releaseYear = parseInt(this.releaseYear);
+
+            Axios.post('http://localhost:8081/api/insert', 
+                {
+                console:this.console,
+                publisher:this.publisher,
+                developer:this.developer,
+                rating:this.rating,
+                releaseYear:this.releaseYear,
+                title:this.title,
+                maxTitle:this.maxTitle,
+                maxPublisher:this.maxPublisher,
+                maxDeveloper:this.maxDeveloper
+                
+                }).then(()=>{
+                    console.log("posted")
+                });
+
+
+
+
+/*
+
+
+
             if(this.title == null ||  this.publisher == null || this.developer == null || this.rating == null || this.console == null || this.releaseYear == null){
                 this.feedbackErr = true;
                 this.feedback = "Form values cannot be null!";
@@ -111,9 +148,14 @@ export default {
                 developer:this.developer,
                 rating:this.rating,
                 releaseYear:this.releaseYear,
-                title:this.title
+                title:this.title,
+                maxTitle:this.maxTitle,
+                maxPublisher:this.maxPublisher,
+                maxDeveloper:this.maxDeveloper
+                
                 }).then(()=>{
                 console.log("Successful Insert");
+                console.log("Insert: ", this.maxTitle, this.title, this.console, this.releaseYear, this.rating, this.publisher, this.developer)
                 }).then(()=>{
                     this.loading = true;
                     setTimeout(()=>{
@@ -122,11 +164,26 @@ export default {
                         },1000)
                 })
             }
+*/
+           
         },
     },
     mounted(){
         ($(document).ready(function(){
             $('select').formSelect();}))
+
+            Axios.get('http://localhost:8081/api/get/max')
+            .then((response=>{
+                console.log(response.data);
+                this.maxIDS = JSON.parse(JSON.stringify(response.data));
+            })).then(()=>{
+                this.maxTitle = this.maxIDS[0].titleID + 1;
+                this.maxPublisher = this.maxIDS[0].publisherID + 2;
+                this.maxDeveloper = this.maxIDS[0].developerID + 3;
+                
+                console.log(this.maxTitle);
+
+            })
     }
 }
 </script>

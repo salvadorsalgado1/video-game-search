@@ -6,6 +6,7 @@ import About from '../views/About'
 import Insert from '../views/Insert'
 import CannotFind from '../views/CannotFind'
 import Edit from '../views/Edit'
+import Search from '../views/Search'
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,6 +34,12 @@ const routes = [
     path: '/edit',
     name: 'Edit',
     component: Edit,
+    props:true
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search,
     props:true
   },
   {

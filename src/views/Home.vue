@@ -12,6 +12,7 @@
                 <input placeholder="Title, Rating, Developer..." v-model="search"/>
                 </div>
               </form>
+              <p>Not seeing what you're looking for? <router-link :to="{name:'Search'}">Try an Advanced Search!</router-link></p>
             <h1 class="heading-h1">{{this.filteredResults.length}} Result(s) of {{this.results.length}}</h1>
             <div v-if="loading">
               <Loading/>
@@ -19,31 +20,33 @@
             <table class="table bordered striped centered" >
               <caption>Game Listings</caption>
               <thead>
-              <tr >
+              <tr>
                 <th>ID</th>
                 <th>Game Title</th>
                 <th>Rating</th>
                 <th>Release Year</th>
+                <th>Console</th>
               </tr>
               </thead>
               <tbody>
-                <tr v-for="(filteredResult, id) in filteredResults" :key="id">
-                  <td>{{filteredResult.id}}</td>
-                  <td>{{filteredResult.title}}</td>
+                <tr v-for="(filteredResult, title_id) in filteredResults" :key="title_id">
+                  <td>{{filteredResult.title_id}}</td>
+                  <td>{{filteredResult.title_name}}</td>
                   <td>{{filteredResult.rating}}</td>
-                  <td>{{filteredResult.releaseYear}}</td>
+                  <td>{{filteredResult.year_release}}</td>
+                  <td>{{filteredResult.console_name}}</td>
                   <td><div v-if="toggleEdit">
                      <router-link class="btn-edit-delete btn blue" :to="{name:'Edit', 
                   params:{
-                    id:filteredResult.id, 
-                    title:filteredResult.title, 
+                    id:filteredResult.title_id, 
+                    title:filteredResult.title_name, 
                     //developer:result.developer,
                    // publisher:result.publisher,
                     rating:filteredResult.rating,
-                    //console:result.console,
-                    releaseYear:filteredResult.releaseYear
+                    console:filteredResult.console_name,
+                    releaseYear:filteredResult.year_release
                     }}">Edit <i class="material-icons right">edit</i></router-link>
-                  <button class="btn-edit-delete btn red" @click="removeQuery(filteredResult.id)">Delete <i class="material-icons right">delete_forever</i></button>
+                  <button class="btn-edit-delete btn red" @click="removeQuery(filteredResult.title_id)">Delete <i class="material-icons right">delete_forever</i></button>
                   </div></td>
                 </tr>
               </tbody>
@@ -87,13 +90,14 @@ export default {
         }
       },
       removeQuery(id){
+        console.log(id);
         Axios.delete(`http://localhost:8081/api/delete/${id}`)
         .then(()=>{
           console.log("Deletion Successful...")
         })
         
         this.results = this.results.filter(result =>{
-          return result.id != id;
+          return result.title_id != id;
         })
         
         }
@@ -101,10 +105,17 @@ export default {
         computed:{
           filteredResults: function(){
             return this.results.filter((result)=>{
-              result.releaseYear = result.releaseYear.toString()
-              return result.title.toUpperCase().match(this.search.toUpperCase()) 
+              if(result.year_release == null){
+                return result.title_name.toUpperCase().match(this.search.toUpperCase()) 
               || result.rating.toUpperCase().match(this.search.toUpperCase()) 
-              || result.releaseYear.match(this.search)
+              || result.year_release.match(this.search)
+              }else{
+              result.year_release = result.year_release.toString()
+              return result.title_name.toUpperCase().match(this.search.toUpperCase()) 
+              || result.rating.toUpperCase().match(this.search.toUpperCase()) 
+              || result.year_release.match(this.search)
+              }
+              
             })
           },
         },
