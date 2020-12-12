@@ -7,7 +7,8 @@
           <h2 class="heading-h2">Technologies Used</h2>
           <Technologies/>
           <h2 class="heading-h2">Developers</h2>
-          <p>By: <br/>Matthew Gibbons &amp; Salvador Salgado<br/><br/>
+          <p>
+              By: <br/>Matthew Gibbons &amp; Salvador Salgado<br/><br/>
               California State University, Channel Islands<br/>
               Computer Science 420 Databases
           </p>
@@ -21,13 +22,6 @@ import Technologies from '../components/Technologies'
 export default {
   components:{
     Technologies
-  
   },
 }
 </script>
-
-<style>
-.heading-h2{
-  font-size:1.6em;
-}
-</style>

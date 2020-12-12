@@ -129,7 +129,6 @@ export default {
     },
     methods:{
         submitEdit(){
-            
             this.loading = true;
             this.getreleaseYear = parseInt(this.getreleaseYear);
             console.log(this.getid, this.gettitle, this.getrating, this.getreleaseYear, this.getconsole,this.publisher, this.developer)
@@ -153,21 +152,17 @@ export default {
     mounted(){
         Axios.get(`http://localhost:8081/api/get/${this.getid}`)
         .then((res)=>{
-            
             console.log(res.data);
             this.gameInformation = JSON.parse(JSON.stringify(res.data));
             this.publisher = this.gameInformation[0].publisher_name;
             this.developer = this.gameInformation[0].developer_name;
             this.genre = this.gameInformation[0].genre;
-            
           });
-            
             ($(document).ready(function(){
                 $('select').formSelect();
                 }))
     }
 }
-
 </script>
 <style>
 .card .card-content p{

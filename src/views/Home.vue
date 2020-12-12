@@ -5,7 +5,11 @@
         <div class="col">
           <div class="card">
             <div class="card-content">
-              <p class="heading-description">Search for your favorite titles, ratings, and even go as far as finding information about your favorite developer titles. Give it a search to try it out!</p>
+              <p class="heading-description">
+                Search for your favorite titles, ratings, and even go as far as finding information 
+                about your favorite developer titles. Give it a search to try it out! You can also 
+                <router-link :to="{name:'SearchByLetter'}">Search By Letter</router-link> if you know the 
+                title of your game.</p>
                <form>
                 <label>Search</label>
                 <div class="input-field">
@@ -36,6 +40,7 @@
                   <td>{{filteredResult.year_release}}</td>
                   <td>{{filteredResult.console_name}}</td>
                   <td><div v-if="toggleEdit">
+                    <button @click="moreInfo(filteredResult.title_id)" class="btn-edit-delete btn green">More<i class="material-icons right">search</i></button>
                      <router-link class="btn-edit-delete btn blue" :to="{name:'Edit', 
                   params:{
                     id:filteredResult.title_id, 
@@ -47,6 +52,7 @@
                     releaseYear:filteredResult.year_release
                     }}">Edit <i class="material-icons right">edit</i></router-link>
                   <button class="btn-edit-delete btn red" @click="removeQuery(filteredResult.title_id)">Delete <i class="material-icons right">delete_forever</i></button>
+                  
                   </div></td>
                 </tr>
               </tbody>
@@ -78,6 +84,9 @@ export default {
     }
   },
    methods:{
+     moreInfo(id){
+       this.$router.push({name:'More', params:{id:id}})
+     },
       toggleEditHandler(){
         console.log("handler")
         
@@ -146,14 +155,20 @@ export default {
   margin-top:5px;
 }
 .heading-h1{
+  font-size:2em;
+}
+.heading-h2{
   font-size:1.8em;
+}
+.heading-h3{
+  font-size:1.6em;
 }
 .heading-description{
   font-size: 1.25rem;
   font-weight: 300;
   color:#212529;
-
 }
+
 
 </style>
 

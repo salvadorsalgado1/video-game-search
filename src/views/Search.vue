@@ -3,18 +3,17 @@
         <div class="container">
             <div class="card">
                 <div class="card-content">
-                    <div class="container">
-                        <h1 class="heading-h1">Search</h1>
-                        <form >
-                        <label>Search</label>
-                        <div class="input-field">
+                    <h1 class="heading-h1">Search</h1>
+                        <form>
+                            <label>Search</label>
+                            <div class="input-field">
                         <input type="text" placeholder="Title, Rating, Developer..." v-model="search"/>
                         </div>
                         <button @click="searchQuery(search)" class="btn blue">Search<i class="material-icons right">search</i></button>
                         </form>
                         <div v-if="searchResult">
-                            <h2 class="heading-h2">Result</h2>
-                            <table class="table striped highlight responsive-table ">
+                            <h2 class="heading-h2">Results</h2>
+                            <table class="table striped highlight ">
                                 <thead>
                                     <tr>
                                         <th>Title</th>
@@ -32,7 +31,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -50,10 +48,10 @@ export default {
         }
     },
     methods:{
-        searchQuery(result){
-            console.log(result)
-            Axios.get(`http://localhost:8081/api/search/${result}`, {
-                
+        searchQuery(search){
+            console.log(search)
+            Axios.get(`http://localhost:8081/api/search/${search}`, {
+
             })
             .then((response)=>{
                 

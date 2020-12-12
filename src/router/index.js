@@ -7,6 +7,8 @@ import Insert from '../views/Insert'
 import CannotFind from '../views/CannotFind'
 import Edit from '../views/Edit'
 import Search from '../views/Search'
+import SearchByLetter from '../views/SearchByLetter'
+import More from '../views/More'
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +42,18 @@ const routes = [
     path: '/search',
     name: 'Search',
     component: Search,
+    props:true
+  },
+  {
+    path: '/search-by-letter',
+    name: 'SearchByLetter',
+    component: SearchByLetter,
+    props:true
+  },
+  {
+    path: '/more-info',
+    name: 'More',
+    component: More,
     props:true
   },
   {
