@@ -1,5 +1,7 @@
+SELECT * FROM heroku_2d1f98aa112f6da.titles;
 
-
+INSERT INTO heroku_2d1f98aa112f6da.titles (title_id, title_name, console_name, year_release, rating)
+VALUES
 (1,"SoulCalibur", "DC", 1999, "T"),
 (2,"Tony Hawk's Pro Skater 2", "Playstation", 2000, "T"),
 (3,"Grand Theft Auto IV", "Playstation 3", 2008, "M"),
@@ -14661,4 +14663,4 @@
 (14659,"Red Dead Redemption 2", "Playstation 4", 2018, "null"),
 (14660,"Call of Duty: Modern Warefare", "Playstation 4", 2019, "null"),
 (14661,"Call of Duty: Modern Warefare", "PC", 2019, "null"),
-(14662,"Call of Duty: Modern Warefare", "Xbox One", 2019, "null"),
+(14662,"Call of Duty: Modern Warefare", "Xbox One", 2019, "null");

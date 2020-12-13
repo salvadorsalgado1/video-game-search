@@ -36,13 +36,6 @@ body{
   background-size: cover;
 }
 
-
-
-
-
-
-
-
 #nav {
   padding: 30px;
 }
